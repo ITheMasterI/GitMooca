@@ -4,6 +4,18 @@ const app = express();
 app.use(express.json());
 app.use(cors())
 
+const Cliente = require("./models/cliente");
+const mongoose = required("mongoose")
+
+
+mongoose.connect("mongodb+srv://usertest:<usjt123456>@cluster0.1eh0m.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
+.then(() => {
+  console.log("Conexao Ok");
+}).catch(() =>{
+
+  console.log("Conexao NOK");
+});
+
 // app.use((req, res, next) => {
 //   res.setHeader('Access-Control-Allow-Origin', '*');
 //   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
@@ -47,7 +59,12 @@ app.get('/api/clientes', (req, res) => {
 })
 
 app.post('/api/clientes', (req, res) => {
-  const cliente = req.body;
+  const cliente = new Cliente({
+    nome: req.body.nome,
+    fone: req.body.fone,
+    email: req.body.email
+  });
+  cliente.save();
   console.log(cliente);
   res.status(201).json({mensagem: 'Cliente inserido'});
 })
